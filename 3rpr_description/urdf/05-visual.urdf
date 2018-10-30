@@ -1,6 +1,4 @@
 <?xml version="1.0"?>
-<!-- taken from http://wiki.ros.org/urdf/Tutorials/Building%20a%20Visual%20Robot%20Model%20with%20URDF%20from%20Scratch -->
-<!-- package available at https://github.com/ros/urdf_tutorial -->
 <robot name="visual">
 
 <material name="blue">
@@ -170,7 +168,7 @@
     <visual>
       <origin rpy="0.0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://3rpr_description/meshes/l_finger.dae"/>
+        <mesh filename="package://urdf_tutorial/meshes/l_finger.dae"/>
       </geometry>
     </visual>
   </link>
@@ -184,7 +182,7 @@
     <visual>
       <origin rpy="0.0 0 0" xyz="0.09137 0.00495 0"/>
       <geometry>
-        <mesh filename="package://3rpr_description/meshes/l_finger_tip.dae"/>
+        <mesh filename="package://urdf_tutorial/meshes/l_finger_tip.dae"/>
       </geometry>
     </visual>
   </link>
@@ -198,7 +196,7 @@
     <visual>
       <origin rpy="-3.1415 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://3rpr_description/meshes/l_finger.dae"/>
+        <mesh filename="package://urdf_tutorial/meshes/l_finger.dae"/>
       </geometry>
     </visual>
   </link>
@@ -212,7 +210,7 @@
     <visual>
       <origin rpy="-3.1415 0 0" xyz="0.09137 0.00495 0"/>
       <geometry>
-        <mesh filename="package://3rpr_description/meshes/l_finger_tip.dae"/>
+        <mesh filename="package://urdf_tutorial/meshes/l_finger_tip.dae"/>
       </geometry>
     </visual>
   </link>
