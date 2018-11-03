@@ -35,6 +35,8 @@ class Motor
 
     //advanced functions
     void init(int alarm, int direction, int enable, int pulse);
+    void setDirectionForward();
+    void setDirectionReverse();
 
 };
 

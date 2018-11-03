@@ -134,3 +134,13 @@ void Motor::pulse(int pulseDuration, int pulsePause)
   delayMicroseconds(pulsePause);
 
 }
+
+void Motor::setDirectionForward()
+{
+  digitalWrite(this->_directionPin, LOW);
+}
+
+void Motor::setDirectionReverse()
+{
+  digitalWrite(this->_directionPin, HIGH);
+}
