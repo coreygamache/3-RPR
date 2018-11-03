@@ -1,6 +1,5 @@
 //includes
 #include <Motor.hpp>
-#include <wiringPi.h>
 
 //constants
 const int MIN_PULSE_DURATION = 10; //minimum delay between HIGH to LOW pulses [us]
@@ -20,20 +19,8 @@ Motor::Motor()
 Motor::Motor(int alarm, int direction, int enable, int pulse)
 {
 
-  //set pin variables
-  this->setAlarmPin(alarm);
-  this->setDirectionPin(direction);
-  this->setEnablePin(enable);
-  this->setPulsePin(pulse);
-
-  //set pin modes
-  pinMode(this->_alarmPin, INPUT);
-  pinMode(this->_directionPin, OUTPUT);
-  pinMode(this->_enablePin, OUTPUT);
-  pinMode(this->_pulsePin, OUTPUT);
-
-  //enable motor by default
-  digitalWrite(this->_enablePin, HIGH);
+  //call init function to initialize object
+  this->init(alarm, direction, enable, pulse);
 
 }
 

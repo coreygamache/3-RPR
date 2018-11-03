@@ -1,12 +1,14 @@
 #ifndef MOTOR_HPP
 #define MOTOR_HPP
 
+#include <wiringPi.h>
+
 //create Motor class
 class Motor
 {
 
   //private properties
-  private:
+  protected:
     int _alarmPin;
     int _directionPin;
     int _enablePin;
