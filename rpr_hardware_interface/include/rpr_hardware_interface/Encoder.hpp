@@ -1,12 +1,17 @@
 #ifndef ENCODER_HPP
 #define ENCODER_HPP
 
+#include <errno.h>
+#include <ros/ros.h>
+#include <wiringPi.h>
+#include <wiringPiSPI.h>
+
 //create Encoder class
 class Encoder
 {
 
   //private properties
-  private:
+  protected:
     int _ssPin;
 
   //public properties

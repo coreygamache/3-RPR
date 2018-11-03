@@ -1,9 +1,5 @@
 //includes
 #include <Encoder.hpp>
-#include <errno.h>
-#include <ros/ros.h>
-#include <wiringPi.h>
-#include <wiringPiSPI.h>
 
 //constants
 const int SPI_CHANNEL = 0; //SPI bus channel (0 or 1)
@@ -22,21 +18,8 @@ Encoder::Encoder()
 Encoder::Encoder(int ssPin)
 {
 
-  //set slave select pin
-  this->setSSPin(ssPin);
-
-  //set pin modes
-  pinMode(this->_ssPin, OUTPUT);
-
-  //setup SPI bus and display result
-  int result = wiringPiSPISetup(SPI_CHANNEL, SPI_SPEED);
-  ROS_INFO("SPI connection result: %d", result);
-
-  //display connection error if necessary
-  if (result == -1)
-  {
-    ROS_INFO("error: %d", errno);
-  }
+  //call init function to initialize object
+  this->init(ssPin);
 
 }
 
@@ -103,6 +86,7 @@ float Encoder::readPosition()
 
   //return encoder position
   return position;
+
 }
 
 //initialize encoder with provided slave select pin
