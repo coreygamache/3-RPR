@@ -149,4 +149,4 @@ add_library(Encoder src/Encoder.cpp)
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(Encoder ${catkin_LIBRARIES} Encoder wiringPi)
+target_link_libraries(Encoder ${catkin_LIBRARIES} wiringPi)
