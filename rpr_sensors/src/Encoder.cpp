@@ -1,58 +1,43 @@
 //includes
-#include <ball_sensor.hpp>
-//#include <ros/ros.h>
+#include <Encoder.hpp>
+#include <errno.h>
+#include <ros/ros.h>
 #include <wiringPi.h>
+#include <wiringPiSPI.h>
 
-/*
-int _channelAPin;
-int _channelBPin;
-int _channelZPin;
-int _clockPin;
-int _misoPin;
-int _mosiPin;
-int _ssPin;
-*/
+//constants
+const int SPI_CHANNEL = 0; //SPI bus channel (0 or 1)
+const int SPI_SPEED = 500000;  //SPI bus speed (500,000 to 32,000,000)
 
-//default constructors
+//default constructor
 Encoder::Encoder()
 {
 
-}
-
-Encoder::Encoder(int aPin, int bPin, int zPin, int clockPin, int misoPin, int mosiPin, int ssPin)
-{
+  //set slave select pin to dummy value
+  this->setSSPin(255);
 
 }
 
-//basic functions
-int Encoder::getChannelAPin()
+//overloaded constructor
+Encoder::Encoder(int ssPin)
 {
-  return this->_channelAPin;
-}
 
-int Encoder::getChannelBPin()
-{
-  return this->_channelBPin;
-}
+  //set slave select pin
+  this->setSSPin(ssPin);
 
-int Encoder::getChannelZPin()
-{
-  return this->_channelZPin;
-}
+  //set pin modes
+  pinMode(this->_ssPin, OUTPUT);
 
-int Encoder::getClockPin()
-{
-  return this->_clockPin;
-}
+  //setup SPI bus and display result
+  int result = wiringPiSPISetup(SPI_CHANNEL, SPI_SPEED);
+  ROS_INFO("SPI connection result: %d", result);
 
-int Encoder::getMISOPin()
-{
-  return this->_misoPin;
-}
+  //display connection error if necessary
+  if (result == -1)
+  {
+    ROS_INFO("error: %d", errno);
+  }
 
-int Encoder::getMOSIPin()
-{
-  return this->_mosiPin;
 }
 
 int Encoder::getSSPin()
@@ -60,49 +45,85 @@ int Encoder::getSSPin()
   return this->_ssPin;
 }
 
-void Encoder::setChannelAPin(int pin)
-{
-  this->_channelAPin = pin;
-}
-
-void Encoder::setChannelBPin(int pin)
-{
-  this->_channelBPin = pin;
-}
-
-void Encoder::setChannelZPin(int pin)
-{
-  this->_channelZPin = pin;
-}
-
-void Encoder::setClockPin(int pin)
-{
-  this->_clockPin = pin;
-}
-
-void Encoder::setMISOPin(int pin)
-{
-  this->_misoPin = pin;
-}
-
-void Encoder::setMOSIPin(int pin)
-{
-  this->_mosiPin = pin;
-}
-
+//basic functions
 void Encoder::setSSPin(int pin)
 {
   this->_ssPin = pin;
 }
 
 //advanced functions
-double Encoder::readPosition()
+float Encoder::readPosition()
 {
 
+  //create variable for holding read/write error status
+  int rwStatus = 0;
+
+  //create buffer array for storing data
+  unsigned char buffer[2];
+
+  //set slave select pin to LOW
+  digitalWrite(this->_ssPin, LOW);
+
+  //set first byte of buffer to read position request byte
+  buffer[0] = 0x10;
+
+  //wait until encoder is ready to transmit data back
+  while (buffer[0] != 0x10)
+  {
+
+    //perform simultaneous read/write operation
+    rwStatus = wiringPiSPIDataRW(SPI_CHANNEL, buffer, 1);
+
+    //output error if one occurred
+    if (rwStatus == -1)
+    {
+      ROS_INFO("error: %d", errno);
+      return -1.0;
+    }
+
+    //delay momentarily before retrying
+    delay(2);
+
+  }
+
+  //receive bits
+  buffer[0] = 0x00;
+  buffer[1] = 0x00;
+  rwStatus = wiringPiSPIDataRW(SPI_CHANNEL, buffer, 2);
+
+  //set slave select pin to HIGH
+  digitalWrite(this->_ssPin, HIGH);
+
+  //mask out first 4 bits of encoder output to buffer
+  buffer[0] &=~ 0xF0;
+
+  //shift bits to produce position value from encoder output to buffer
+  float position = buffer[0] << 8; //shift MSB to front of position
+  position += buffer[1]; //append LSB to end of position
+
+  //return encoder position
+  return position;
 }
 
-void Encoder::init(int aPin, int bPin, int zPin, int clockPin, int misoPin, int mosiPin, int ssPin)
+//initialize encoder with provided slave select pin
+void Encoder::init(int ssPin)
 {
+
+  //set slave select pin
+  this->setSSPin(ssPin);
+
+  //set pin modes
+  pinMode(this->_ssPin, OUTPUT);
+
+  //setup SPI bus and display result
+  int result = wiringPiSPISetup(SPI_CHANNEL, SPI_SPEED);
+  ROS_INFO("SPI connection result: %d", result);
+
+  //display connection error if necessary
+  if (result == -1)
+  {
+    ROS_INFO("error: %d", errno);
+  }
 
 }
 
