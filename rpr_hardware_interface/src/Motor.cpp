@@ -1,6 +1,5 @@
 //includes
 #include <Motor.hpp>
-#include <ros/ros.h>
 #include <wiringPi.h>
 
 //constants
