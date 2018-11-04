@@ -1,0 +1,3 @@
+<!-- <group if="$(arg sensors_enabled)">
+  <include file="$(find avc_bringup)/launch/sensors.launch" />
+</group> -->
