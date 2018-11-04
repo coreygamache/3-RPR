@@ -1,15 +1,3 @@
-encoder_1:
-  countsPerRev: 4096
-  ssPin: 255
-
-encoder_2:
-  countsPerRev: 4096
-  ssPin: 255
-
-encoder_3:
-  countsPerRev: 4096
-  ssPin: 255
-
 motor_1:
   alarmPin: 255
   directionPin: 255
