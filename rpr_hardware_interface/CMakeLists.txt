@@ -103,7 +103,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES Encoder Motor EncoderMotor
+  LIBRARIES Motor
   CATKIN_DEPENDS roscpp std_msgs
 #  DEPENDS system_lib
 )
@@ -123,9 +123,9 @@ include_directories(
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/rpr_hardware_interface.cpp
 # )
-add_library(Encoder src/Encoder.cpp)
+#add_library(Encoder src/Encoder.cpp)
 add_library(Motor src/Motor.cpp)
-add_library(EncoderMotor src/EncoderMotor.cpp)
+#add_library(EncoderMotor src/EncoderMotor.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -136,6 +136,7 @@ add_library(EncoderMotor src/EncoderMotor.cpp)
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/rpr_hardware_interface_node.cpp)
+add_executable(motor_node src/motor_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -151,6 +152,7 @@ add_library(EncoderMotor src/EncoderMotor.cpp)
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(Encoder ${catkin_LIBRARIES} wiringPi)
+#target_link_libraries(Encoder ${catkin_LIBRARIES} wiringPi)
 target_link_libraries(Motor ${catkin_LIBRARIES} wiringPi)
-target_link_libraries(EncoderMotor ${catkin_LIBRARIES})
+#target_link_libraries(EncoderMotor ${catkin_LIBRARIES})
+target_link_libraries(motor_node ${catkin_LIBRARIES} Motor)
