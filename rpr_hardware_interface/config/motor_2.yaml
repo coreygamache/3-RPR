@@ -1,0 +1,6 @@
+motor_2:
+  alarmPin: 255
+  directionPin: 255
+  enablePin: 255
+  maxRPM: 3000
+  pulsePin: 255
