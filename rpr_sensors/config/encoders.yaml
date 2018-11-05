@@ -1,11 +1,14 @@
 encoder_1:
   countsPerRev: 4096.0
+  refresh_rate: 10
   ssPin: 253
 
 encoder_2:
   countsPerRev: 4096.0
+  refresh_rate: 10
   ssPin: 254
 
 encoder_3:
   countsPerRev: 4096.0
+  refresh_rate: 10
   ssPin: 255
