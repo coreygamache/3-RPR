@@ -1,17 +1,15 @@
 <launch>
 
-  <!-- load common parameter file into private encoder parameter servers -->
+  <!-- load common parameter file into encoder namespace -->
   <rosparam command="load" file="$(find rpr_sensors)/config/encoders.yaml" ns="/encoder" />
-  <!--<rosparam command="load" file="$(find rpr_sensors)/config/encoders.yaml" ns="/encoder/encoder_2" />
-  <rosparam command="load" file="$(find rpr_sensors)/config/encoders.yaml" ns="/encoder/encoder_3" />-->
 
-  <!-- launch encoder_1 node  -->
+  <!-- launch encoder_1 node in encoder namespace -->
   <node pkg="rpr_sensors" type="encoder_node" name="encoder_1" ns="encoder" args="1" output="screen" />
 
-  <!-- launch encoder_2 node  -->
+  <!-- launch encoder_2 node in encoder namespace -->
   <node pkg="rpr_sensors" type="encoder_node" name="encoder_2" ns="encoder" args="2" output="screen" />
 
-  <!-- launch encoder_3 node  -->
+  <!-- launch encoder_3 node in encoder namespace -->
   <node pkg="rpr_sensors" type="encoder_node" name="encoder_3" ns="encoder" args="3" output="screen" />
 
 </launch>
