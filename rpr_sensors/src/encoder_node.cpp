@@ -34,7 +34,7 @@ int main(int argc, char **argv)
   }
 
   //ROS_INFO("%d", motor_number);
-  std::string encoder_path = "encoder_";
+  std::string encoder_path = "/encoder/encoder_";
   encoder_path = encoder_path + boost::lexical_cast<std::string>(encoder_number);
   ROS_INFO("encoder path: %s", encoder_path.c_str());
 

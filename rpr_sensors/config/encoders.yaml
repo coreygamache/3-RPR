@@ -1,11 +1,11 @@
 encoder_1:
   countsPerRev: 4096
-  ssPin: 255
+  ssPin: 1
 
 encoder_2:
   countsPerRev: 4096
-  ssPin: 255
+  ssPin: 2
 
 encoder_3:
   countsPerRev: 4096
-  ssPin: 255
+  ssPin: 3
