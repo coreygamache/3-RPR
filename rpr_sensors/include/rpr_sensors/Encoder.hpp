@@ -12,6 +12,7 @@ class Encoder
 
   //private properties
   protected:
+    float _countsPerRev;
     int _ssPin;
 
   //public properties
@@ -19,15 +20,17 @@ class Encoder
 
     //default constructors
     Encoder();
-    Encoder(int ssPin);
+    Encoder(float countsPerRev, int ssPin);
 
     //basic functions
+    float getCountsPerRev();
     int getSSPin();
+    void setCountsPerRev(float cpr);
     void setSSPin(int pin);
 
     //advanced functions
     float readPosition();
-    void init(int ssPin);
+    void init(float countsPerRev, int ssPin);
     void setZero();
 
 };

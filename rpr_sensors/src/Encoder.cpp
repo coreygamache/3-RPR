@@ -9,18 +9,25 @@ const int SPI_SPEED = 500000;  //SPI bus speed (500,000 to 32,000,000)
 Encoder::Encoder()
 {
 
-  //set slave select pin to dummy value
+  //set slave select pin and counts per revolution to dummy values
+  this->setCountsPerRev(1.0);
   this->setSSPin(255);
 
 }
 
 //overloaded constructor
-Encoder::Encoder(int ssPin)
+Encoder::Encoder(float countsPerRev, int ssPin)
 {
 
   //call init function to initialize object
-  this->init(ssPin);
+  this->init(countsPerRev, ssPin);
 
+}
+
+//basic functions
+float Encoder::getCountsPerRev()
+{
+  return this->_countsPerRev;
 }
 
 int Encoder::getSSPin()
@@ -28,7 +35,18 @@ int Encoder::getSSPin()
   return this->_ssPin;
 }
 
-//basic functions
+void Encoder::setCountsPerRev(float countsPerRev)
+{
+
+  //verify counts per revolution value is valid
+  if (countsPerRev <= 0)
+    countsPerRev = 1.0;
+
+  //set object counts per revolution variable to valid provided value
+  this->_countsPerRev = countsPerRev;
+
+}
+
 void Encoder::setSSPin(int pin)
 {
   this->_ssPin = pin;
@@ -90,10 +108,11 @@ float Encoder::readPosition()
 }
 
 //initialize encoder with provided slave select pin
-void Encoder::init(int ssPin)
+void Encoder::init(float countsPerRev, int ssPin)
 {
 
-  //set slave select pin
+  //set counts per revolution and slave select pin
+  this->setCountsPerRev(countsPerRev);
   this->setSSPin(ssPin);
 
   //set pin modes
