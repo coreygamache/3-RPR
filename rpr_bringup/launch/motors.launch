@@ -1,15 +1,15 @@
 <launch>
 
-  <!-- load rpr_hardware_interface motor_1 parameters into private parameter server and launch motor_1 node  -->
-  <rosparam command="load" file="$(find rpr_hardware_interface)/config/motor_1.yaml" ns="motor_1" />
+  <!-- load common parameter file into motor namespace -->
+  <rosparam command="load" file="$(find rpr_hardware_interface)/config/motors.yaml" ns="/motor" />
+
+  <!-- launch motor_1 node in motor namespace -->
   <node pkg="rpr_hardware_interface" type="motor_node" name="motor_1" args="1" output="screen"/>
 
-  <!-- load rpr_hardware_interface motor_1 parameters into private parameter server and launch motor_2 node  -->
-  <rosparam command="load" file="$(find rpr_hardware_interface)/config/motor_2.yaml" ns="motor_2" />
+  <!-- launch motor_2 node in motor namespace -->
   <node pkg="rpr_hardware_interface" type="motor_node" name="motor_2" args="2" output="screen"/>
 
-  <!-- load rpr_hardware_interface motor_1 parameters into private parameter server and launch motor_1 node  -->
-  <rosparam command="load" file="$(find rpr_hardware_interface)/config/motor_3.yaml" ns="motor_3" />
+  <!-- launch motor_3 node in motor namespace -->
   <node pkg="rpr_hardware_interface" type="motor_node" name="motor_3" args="3" output="screen"/>
 
 </launch>
