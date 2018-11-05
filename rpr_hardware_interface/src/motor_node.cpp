@@ -34,9 +34,8 @@ int main(int argc, char **argv)
   }
 
   //ROS_INFO("%d", motor_number);
-  std::string motor_path = "motor_";
+  std::string motor_path = "/motor/motor_";
   motor_path = motor_path + boost::lexical_cast<std::string>(motor_number);
-  //motor_path += "/alarmPin";
   ROS_INFO("motor path: %s", motor_path.c_str());
 
   int alarmPin;
