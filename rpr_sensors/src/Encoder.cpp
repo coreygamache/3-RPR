@@ -9,6 +9,9 @@ const int SPI_SPEED = 500000;  //SPI bus speed (500,000 to 32,000,000)
 Encoder::Encoder()
 {
 
+  //run standard wiringPi setup routine
+  wiringPiSetup();
+
   //set slave select pin and counts per revolution to dummy values
   this->setCountsPerRev(1.0);
   this->setSSPin(255);
@@ -110,6 +113,9 @@ float Encoder::readPosition()
 //initialize encoder with provided slave select pin
 void Encoder::init(float countsPerRev, int ssPin)
 {
+
+  //run standard wiringPi setup routine
+  wiringPiSetup();
 
   //set counts per revolution and slave select pin
   this->setCountsPerRev(countsPerRev);
