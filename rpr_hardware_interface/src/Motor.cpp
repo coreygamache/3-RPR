@@ -8,6 +8,9 @@ const int MIN_PULSE_PAUSE = 10; //minimum delay between LOW to HIGH pulses [us]
 Motor::Motor()
 {
 
+  //run standard wiringPi setup routine
+  wiringPiSetup();
+
   //set pins to dummy values
   this->setAlarmPin(255);
   this->setDirectionPin(255);
@@ -69,6 +72,9 @@ void Motor::setPulsePin(int pin)
 //advanced functions
 void Motor::init(int alarm, int direction, int enable, int pulse)
 {
+
+  //run standard wiringPi setup routine
+  wiringPiSetup();
 
   //set pin variables
   this->setAlarmPin(alarm);
