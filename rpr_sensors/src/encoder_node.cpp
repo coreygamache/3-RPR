@@ -1,6 +1,7 @@
 //encoder motor control node
 #include <Encoder.hpp>
 #include <ros/ros.h>
+#include <rpr_msgs/Encoder.h>
 #include <string.h>
 
 int main(int argc, char **argv)
@@ -13,15 +14,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "encoder_node");
   ros::NodeHandle node_private("~");
 
-  //define motor_number via parameter
-  /*int motor_number;
-  if (!node_private.getParam("motor_number", motor_number))
-  {
-    ROS_ERROR("line sensor refresh rate not defined in config file: sd_sensors/config/sensors.yaml");
-    ROS_BREAK();
-  }*/
-
-  //define motor_number via passed argument
+  //define encoder_number via passed argument
   char *encoder_number;
   if (argc == 2)
   {
@@ -29,75 +22,74 @@ int main(int argc, char **argv)
   }
   else
   {
-    ROS_ERROR("incorrect number of arguments");
+    ROS_ERROR("[ERROR] encoder_node received incorrect number of arguments");
     ROS_BREAK();
   }
 
-  //ROS_INFO("%d", motor_number);
-  std::string encoder_path = "/encoder/encoder_";
-  encoder_path = encoder_path + boost::lexical_cast<std::string>(encoder_number);
-  ROS_INFO("encoder path: %s", encoder_path.c_str());
+  //set encoder_path for retrieving parameters from parameter server for this node
+  std::string encoder_name = "encoder_";
+  encoder_name = encoder_name + boost::lexical_cast<std::string>(encoder_number);
+  std::string encoder_path = "/encoder/" + encoder_name;
+  //ROS_INFO("encoder path: %s", encoder_path.c_str()); //display path (for testing)
 
-
-  int ssPin;
-  if (!node_private.getParam(encoder_path + "/ssPin", ssPin))
+  //retrieve encoder slave select pin from parameter server
+  int ss_pin;
+  if (!node_private.getParam(encoder_path + "/ss_pin", ss_pin))
   {
-    ROS_ERROR("slave select pin gone bad");
+    ROS_ERROR("[ERROR] slave select pin not defined in config file: sd_sensors/config/sensors.yaml, path: %s", encoder_path.c_str());
     ROS_BREAK();
   }
-  ROS_INFO("slave select pin: %d", ssPin);
-/*
-  //get output pin from parameter server
-  int output_pin;
-  if (!node_private.getParam("ball_sensor/output_pin", output_pin))
+  //ROS_INFO("slave select pin: %d", ss_pin); //display slave select pin (for testing)
+
+  //retrieve encoder counts per revolution from parameter server
+  float counts_per_rev;
+  if (!node_private.getParam(encoder_path + "/counts_per_rev", counts_per_rev))
   {
-    ROS_ERROR("ball sensor output pin not defined in config file: sd_sensors/config/sensors.yaml");
+    ROS_ERROR("[ERROR] counts per revolution not defined in config file: sd_sensors/config/sensors.yaml, path: %s", encoder_path.c_str());
     ROS_BREAK();
   }
 
-  //create BallSensor type object using defined outpin pin from parameter server
-  BallSensor sensor(output_pin);
-
-  //create sd_msgs/Ball type message to publish ball (proximity) sensor data
-  sd_msgs::Ball ball_msg;
-
-  //set ball sensor frame id
-  ball_msg.header.frame_id = "ball_sensor_link";
-
-  //----------------------------------------------------------
-
-  //create publisher to publish ball sensor message with buffer size 10, and latch set to false
-  ros::Publisher ball_sensor_pub = node_private.advertise<sd_msgs::Ball>("ball_sensor", 10, false);
-
-  //get refresh rate of sensor in hertz from parameter server
+  //retrieve encoder refresh rate from parameter server
   float refresh_rate;
-  if (!node_private.getParam("ball_sensor/refresh_rate", refresh_rate))
+  if (!node_private.getParam(encoder_path + "/refresh_rate", refresh_rate))
   {
-    ROS_ERROR("ball sensor refresh rate not defined in config file: sd_sensors/config/sensors.yaml");
+    ROS_ERROR("[ERROR] refresh rate not defined in config file: sd_sensors/config/sensors.yaml, path: %s", encoder_path.c_str());
     ROS_BREAK();
   }
-*/
+
+  //create Encoder type object using defined slave select pin and counts per revolution from parameter server
+  Encoder encoder(counts_per_rev, ss_pin);
+
+  //create rpr_msgs/Encoder type message to publish encoder data
+  rpr_msgs::Encoder encoder_msg;
+
+  //set encoder frame id and number
+  encoder_msg.header.frame_id = "0";
+  encoder_msg.encoder_number = int(encoder_number[0]) - int('0');
+
+  //create publisher to publish encoder message with buffer size 10, and latch set to false
+  ros::Publisher encoder_pub = node_private.advertise<rpr_msgs::Encoder>(encoder_path, 10, false);
+
   //set refresh rate of ROS loop to defined refresh rate from parameter server
-  float refresh_rate = 1;
   ros::Rate loop_rate(refresh_rate);
 
   while (ros::ok())
   {
-/*
-    //set time of current ball sensor reading
-    ball_msg.header.stamp = ros::Time::now();
 
-    //check whether a ball is currently detected by sensor and set message data
-    ball_msg.ball_detected = sensor.ballDetected();
+    //set message timestamp to time of encoder reading
+    encoder_msg.header.stamp = ros::Time::now();
 
-    //publish ball sensor message
-    ball_sensor_pub.publish(ball_msg);
+    //get current encoder position set message data
+    encoder_msg.position = encoder.readPosition();
+
+    //publish encoder message
+    encoder_pub.publish(encoder_msg);
 
     //spin once because ROS
     ros::spinOnce();
 
     //sleep until next sensor reading
-    loop_rate.sleep();*/
+    loop_rate.sleep();
 
   }
 
