@@ -1,20 +1,23 @@
 motor_1:
-  alarmPin: 247
-  directionPin: 255
-  enablePin: 255
-  maxRPM: 3000
-  pulsePin: 250
+  alarm_pin: 247
+  direction_pin: 255
+  enable_pin: 255
+  max_rpm: 3000.0
+  pulse_pin: 250
+  refresh_rate: 10
 
 motor_2:
-  alarmPin: 248
-  directionPin: 255
-  enablePin: 255
-  maxRPM: 3000
-  pulsePin: 251
+  alarm_pin: 248
+  direction_pin: 255
+  enable_pin: 255
+  max_rpm: 3000.0
+  pulse_pin: 251
+  refresh_rate: 10
 
 motor_3:
-  alarmPin: 249
-  directionPin: 255
-  enablePin: 255
-  maxRPM: 3000
-  pulsePin: 252
+  alarm_pin: 249
+  direction_pin: 255
+  enable_pin: 255
+  max_rpm: 3000.0
+  pulse_pin: 252
+  refresh_rate: 10
