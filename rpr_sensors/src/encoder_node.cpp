@@ -85,7 +85,7 @@ int main(int argc, char **argv)
     //publish encoder message
     encoder_pub.publish(encoder_msg);
 
-    //spin once because ROS
+    //process callback function calls
     ros::spinOnce();
 
     //sleep until next sensor reading
