@@ -4,12 +4,12 @@
   <rosparam command="load" file="$(find rpr_hardware_interface)/config/motors.yaml" ns="/motor" />
 
   <!-- launch motor_1 node in motor namespace -->
-  <node pkg="rpr_hardware_interface" type="motor_node" name="motor_1" args="1" output="screen"/>
+  <node pkg="rpr_hardware_interface" type="motor_node" name="motor_1" ns="motor" args="1" output="screen"/>
 
   <!-- launch motor_2 node in motor namespace -->
-  <node pkg="rpr_hardware_interface" type="motor_node" name="motor_2" args="2" output="screen"/>
+  <node pkg="rpr_hardware_interface" type="motor_node" name="motor_2" ns="motor" args="2" output="screen"/>
 
   <!-- launch motor_3 node in motor namespace -->
-  <node pkg="rpr_hardware_interface" type="motor_node" name="motor_3" args="3" output="screen"/>
+  <node pkg="rpr_hardware_interface" type="motor_node" name="motor_3" ns="motor" args="3" output="screen"/>
 
 </launch>
