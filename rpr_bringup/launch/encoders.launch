@@ -7,9 +7,9 @@
   <node pkg="rpr_sensors" type="encoder_node" name="encoder_1" ns="encoder" args="1" output="screen" />
 
   <!-- launch encoder_2 node in encoder namespace -->
-  <node pkg="rpr_sensors" type="encoder_node" name="encoder_2" ns="encoder" args="2" output="screen" />
+  <!-- <node pkg="rpr_sensors" type="encoder_node" name="encoder_2" ns="encoder" args="2" output="screen" /> -->
 
   <!-- launch encoder_3 node in encoder namespace -->
-  <node pkg="rpr_sensors" type="encoder_node" name="encoder_3" ns="encoder" args="3" output="screen" />
+  <!-- <node pkg="rpr_sensors" type="encoder_node" name="encoder_3" ns="encoder" args="3" output="screen" /> -->
 
 </launch>
