@@ -79,8 +79,8 @@ int main(int argc, char **argv)
     //set message timestamp to time of encoder reading
     encoder_msg.header.stamp = ros::Time::now();
 
-    //get current encoder position set message data
-    encoder_msg.position = encoder.readPosition();
+    //get current encoder position set message data [deg]
+    encoder_msg.position = encoder.readPosition() / counts_per_rev * 360;
 
     //publish encoder message
     encoder_pub.publish(encoder_msg);
