@@ -62,14 +62,17 @@ float Encoder::readPosition()
   //create buffer array for storing data
   unsigned char buffer[2];
 
-  //set slave select pin to LOW
-  digitalWrite(this->_ssPin, LOW);
-
   //set first byte of buffer to read position request byte
   buffer[0] = 0x10;
 
+  //set slave select pin to LOW
+  digitalWrite(this->_ssPin, LOW);
+
   //perform simultaneous read/write operation
   int rwStatus = wiringPiSPIDataRW(SPI_CHANNEL, buffer, 1);
+
+  //set slave select pin to HIGH
+  digitalWrite(this->_ssPin, HIGH);
 
   //output error if one occurred
   if (rwStatus == -1)
@@ -85,8 +88,14 @@ float Encoder::readPosition()
     //reset buffer to issue NOP command
     buffer[0] = 0x00;
 
+    //set slave select pin to LOW
+    digitalWrite(this->_ssPin, LOW);
+
     //perform simultaneous read/write operation
     rwStatus = wiringPiSPIDataRW(SPI_CHANNEL, buffer, 1);
+
+    //set slave select pin to HIGH
+    digitalWrite(this->_ssPin, HIGH);
 
     ROS_INFO("current reading: %d", buffer[0]);
 
@@ -113,13 +122,16 @@ float Encoder::readPosition()
   }*/
   buffer[0] = 0x00;
   buffer[1] = 0x00;
-  rwStatus = wiringPiSPIDataRW(SPI_CHANNEL, buffer, 2);
 
-  if (rwStatus == -1)
-    ROS_ERROR("[ERROR] error reading/writing via SPI bus: %d", errno);
+  //set slave select pin to LOW
+  digitalWrite(this->_ssPin, LOW);
+  rwStatus = wiringPiSPIDataRW(SPI_CHANNEL, buffer, 2);
 
   //set slave select pin to HIGH
   digitalWrite(this->_ssPin, HIGH);
+
+  if (rwStatus == -1)
+    ROS_ERROR("[ERROR] error reading/writing via SPI bus: %d", errno);
 
   //mask out first 4 bits of encoder output to buffer
   buffer[0] &=~ 0xF0;
