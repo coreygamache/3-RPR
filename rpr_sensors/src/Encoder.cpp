@@ -97,8 +97,6 @@ float Encoder::readPosition()
     //set slave select pin to HIGH
     digitalWrite(this->_ssPin, HIGH);
 
-    ROS_INFO("current reading: %d", buffer[0]);
-
     //output error if one occurred
     if (rwStatus == -1)
     {

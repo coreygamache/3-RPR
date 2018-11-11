@@ -81,7 +81,6 @@ int main(int argc, char **argv)
 
     //get current encoder position set message data
     encoder_msg.position = encoder.readPosition();
-    ROS_INFO("latest position: %f", encoder_msg.position);
 
     //publish encoder message
     encoder_pub.publish(encoder_msg);
