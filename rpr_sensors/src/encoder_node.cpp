@@ -39,7 +39,7 @@ int main(int argc, char **argv)
     ROS_ERROR("[ERROR] slave select pin not defined in config file: sd_sensors/config/sensors.yaml, path: %s", encoder_path.c_str());
     ROS_BREAK();
   }
-  //ROS_INFO("slave select pin: %d", ss_pin); //display slave select pin (for testing)
+  ROS_INFO("slave select pin: %d", ss_pin); //display slave select pin (for testing)
 
   //retrieve encoder counts per revolution from parameter server
   float counts_per_rev;

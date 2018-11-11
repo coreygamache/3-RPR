@@ -2,7 +2,7 @@
 #include <Encoder.hpp>
 
 //constants
-const int SPI_CHANNEL = 0; //SPI bus channel (0 or 1)
+const int SPI_CHANNEL = 1; //SPI bus channel (0 or 1)
 const int SPI_SPEED = 500000;  //SPI bus speed (500,000 to 32,000,000)
 
 //default constructor
