@@ -101,14 +101,20 @@ float Encoder::readPosition()
   }
 
   //receive bits
-  for (int i = 0; i < 2; i++)
+  /*for (int i = 0; i < 2; i++)
   {
     buffer[i] = 0x00;
     rwStatus = wiringPiSPIDataRW(SPI_CHANNEL, &buffer[i], 1);
 
     if (rwStatus == -1)
       ROS_ERROR("[ERROR] error reading/writing via SPI bus: %d", errno);
-  }
+  }*/
+  buffer[0] = 0x00;
+  buffer[1] = 0x00;
+  rwStatus = wiringPiSPIDataRW(SPI_CHANNEL, buffer, 2);
+
+  if (rwStatus == -1)
+    ROS_ERROR("[ERROR] error reading/writing via SPI bus: %d", errno);
 
   //set slave select pin to HIGH
   digitalWrite(this->_ssPin, HIGH);
