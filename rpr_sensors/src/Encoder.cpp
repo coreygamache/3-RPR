@@ -88,6 +88,8 @@ float Encoder::readPosition()
     //perform simultaneous read/write operation
     rwStatus = wiringPiSPIDataRW(SPI_CHANNEL, buffer, 1);
 
+    ROS_INFO("current reading: %d", buffer[0]);
+
     //output error if one occurred
     if (rwStatus == -1)
     {
@@ -96,7 +98,7 @@ float Encoder::readPosition()
     }
 
     //delay momentarily before retrying
-    delay(2);
+    delay(250);
 
   }
 
