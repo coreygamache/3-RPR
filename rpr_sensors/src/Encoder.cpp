@@ -105,7 +105,7 @@ float Encoder::readPosition()
     }
 
     //delay momentarily before retrying
-    delay(250);
+    delay(2);
 
   }
 
