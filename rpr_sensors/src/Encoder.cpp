@@ -96,7 +96,7 @@ float Encoder::readPosition()
   rwStatus = wiringPiSPIDataRW(SPI_CHANNEL, buffer, 2);
 
   if (rwStatus == -1)
-    ROS_WARNING("[ERROR] error reading/writing via SPI bus: %d", errno);
+    ROS_ERROR("[ERROR] error reading/writing via SPI bus: %d", errno);
 
   //set slave select pin to HIGH
   digitalWrite(this->_ssPin, HIGH);
