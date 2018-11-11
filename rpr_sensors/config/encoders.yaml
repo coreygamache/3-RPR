@@ -1,7 +1,7 @@
 encoder_1:
   counts_per_rev: 4000.0
   refresh_rate: 1
-  ss_pin: 10 # wiringPi numbering system
+  ss_pin: 3 # wiringPi numbering system
 
 encoder_2:
   counts_per_rev: 4000.0
