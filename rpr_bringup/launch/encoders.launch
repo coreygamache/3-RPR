@@ -1,7 +1,7 @@
 <launch>
 
   <!-- load common parameter file into encoder namespace -->
-  <rosparam command="load" file="$(find rpr_sensors)/config/encoders.yaml" ns="/encoder" />
+  <rosparam command="load" file="$(find rpr_sensors)/config/sensors.yaml" ns="/encoder" />
 
   <!-- launch encoder_1 node in encoder namespace -->
   <node pkg="rpr_sensors" type="encoder_node" name="encoder_1" ns="encoder" args="1" output="screen" />
