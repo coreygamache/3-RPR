@@ -1,7 +1,21 @@
 //encoder motor control node
 #include <Motor.hpp>
 #include <ros/ros.h>
+#include <rpr_msgs/Encoder.h>
+#include <rpr_msgs/MotorActuation.h>
 #include <string.h>
+
+//callback function called to process messages on encoder_(motor_number) topic
+void encoderCallback(const rpr_msgs::Encoder::ConstPtr& msg)
+{
+
+}
+
+//callback function to process MotorActuation service requests to this node
+bool motorActuationCallback(rpr_msgs::MotorActuation::Request &req, rpr_msgs::MotorActuation::Response &res)
+{
+
+}
 
 int main(int argc, char **argv)
 {
@@ -33,66 +47,103 @@ int main(int argc, char **argv)
     ROS_BREAK();
   }
 
-  //ROS_INFO("%d", motor_number);
+  //set motor path for retrieving parameters from parameter server for this node
   std::string motor_path = "/motor/motor_";
   motor_path = motor_path + boost::lexical_cast<std::string>(motor_number);
   ROS_INFO("motor path: %s", motor_path.c_str());
 
-  int alarmPin;
-  if (!node_private.getParam(motor_path + "/alarmPin", alarmPin))
+  //set encoder path for subscribing to this motor's encoder topic
+  std::string encoder_topic = "/encoder/encoder_" + boost::lexical_cast<std::string>(motor_number);
+  ROS_INFO("encoder topic: %s", encoder_topic.c_str());
+
+  //retrieve motor alarm pin from parameter server
+  int alarm_pin;
+  if (!node_private.getParam(motor_path + "/alarm_pin", alarm_pin))
   {
-    ROS_ERROR("alarmPin gone bad");
+    ROS_ERROR("[ERROR] alarm pin not defined in config file: rpr_hardware_interface/config/sd_hardware_interface.yaml, path: %s", motor_path.c_str()");
     ROS_BREAK();
   }
-  ROS_INFO("alarm pin: %d", alarmPin);
-/*
-  //get output pin from parameter server
-  int output_pin;
-  if (!node_private.getParam("ball_sensor/output_pin", output_pin))
+  //ROS_INFO("alarm pin: %d", alarm_pin);
+
+  //retrieve motor direction pin from parameter server
+  int direction_pin;
+  if (!node_private.getParam(motor_path + "/direction_pin", direction_pin))
   {
-    ROS_ERROR("ball sensor output pin not defined in config file: sd_sensors/config/sensors.yaml");
+    ROS_ERROR("[ERROR] direction pin not defined in config file: rpr_hardware_interface/config/sd_hardware_interface.yaml, path: %s", motor_path.c_str()");
     ROS_BREAK();
   }
+  //ROS_INFO("direction pin: %d", direction_pin);
 
-  //create BallSensor type object using defined outpin pin from parameter server
-  BallSensor sensor(output_pin);
-
-  //create sd_msgs/Ball type message to publish ball (proximity) sensor data
-  sd_msgs::Ball ball_msg;
-
-  //set ball sensor frame id
-  ball_msg.header.frame_id = "ball_sensor_link";
-
-  //----------------------------------------------------------
-
-  //create publisher to publish ball sensor message with buffer size 10, and latch set to false
-  ros::Publisher ball_sensor_pub = node_private.advertise<sd_msgs::Ball>("ball_sensor", 10, false);
-
-  //get refresh rate of sensor in hertz from parameter server
-  float refresh_rate;
-  if (!node_private.getParam("ball_sensor/refresh_rate", refresh_rate))
+  //retrieve motor enable pin from parameter server
+  int enable_pin;
+  if (!node_private.getParam(motor_path + "/enable_pin", enable_pin))
   {
-    ROS_ERROR("ball sensor refresh rate not defined in config file: sd_sensors/config/sensors.yaml");
+    ROS_ERROR("[ERROR] enable pin not defined in config file: rpr_hardware_interface/config/sd_hardware_interface.yaml, path: %s", motor_path.c_str()");
     ROS_BREAK();
   }
-*/
+  ROS_INFO("enable pin: %d", enable_pin);
+
+  //retrieve motor max rpm from parameter server
+  int max_rpm;
+  if (!node_private.getParam(motor_path + "/max_rpm", max_rpm))
+  {
+    ROS_ERROR("[ERROR] max rpm not defined in config file: rpr_hardware_interface/config/sd_hardware_interface.yaml, path: %s", motor_path.c_str()");
+    ROS_BREAK();
+  }
+  //ROS_INFO("max rpm: %d", max_rpm);
+
+  //retrieve motor minimum high pulse width from parameter server
+  int min_high_pulse_width;
+  if (!node_private.getParam(motor_path + "/min_high_pulse_width", min_high_pulse_width))
+  {
+    ROS_ERROR("[ERROR] min high pulse width not defined in config file: rpr_hardware_interface/config/sd_hardware_interface.yaml, path: %s", motor_path.c_str()");
+    ROS_BREAK();
+  }
+  //ROS_INFO("min high pulse width: %d", min_high_pulse_width);
+
+  //retrieve motor minimum low pulse width from parameter server
+  int min_low_pulse_width;
+  if (!node_private.getParam(motor_path + "/min_low_pulse_width", min_low_pulse_width))
+  {
+    ROS_ERROR("[ERROR] min low pulse width not defined in config file: rpr_hardware_interface/config/sd_hardware_interface.yaml, path: %s", motor_path.c_str()");
+    ROS_BREAK();
+  }
+  ROS_INFO("min low pulse width: %d", min_low_pulse_width);
+
+  //retrieve motor pulse pin from parameter server
+  int pulse_pin;
+  if (!node_private.getParam(motor_path + "/pulse_pin", pulse_pin))
+  {
+    ROS_ERROR("[ERROR] pulse pin not defined in config file: rpr_hardware_interface/config/sd_hardware_interface.yaml, path: %s", motor_path.c_str()");
+    ROS_BREAK();
+  }
+  ROS_INFO("pulse pin: %d", pulse_pin);
+
+  //retrieve motor refresh rate from parameter server
+  int refresh_rate;
+  if (!node_private.getParam(motor_path + "/refresh_rate", refresh_rate))
+  {
+    ROS_ERROR("[ERROR] refresh rate not defined in config file: rpr_hardware_interface/config/sd_hardware_interface.yaml, path: %s", motor_path.c_str()");
+    ROS_BREAK();
+  }
+  ROS_INFO("refresh rate: %d", refresh_rate);
+
+  //create Motor type object using defined values from parameter server
+  Motor motor(alarm_pin, direction_pin, enable_pin, pulse_pin, max_rpm, min_high_pulse_width, min_low_pulse_width);
+
+  //create sunscriber to subscribe to drive motor messages message topic with queue size set to 1000
+  ros::Subscriber encoder_sub = node_private.subscribe(encoder_topic, 1000, encoderCallback);
+
+  //create service server to handle MotorActuation service requests to this node
+  ros::ServiceServer motor_actuation_ss = node_private.advertiseService(motor_name + "_actuation", motorActuationCallback);
+
   //set refresh rate of ROS loop to defined refresh rate from parameter server
-  float refresh_rate = 1;
   ros::Rate loop_rate(refresh_rate);
 
   while (ros::ok())
   {
-/*
-    //set time of current ball sensor reading
-    ball_msg.header.stamp = ros::Time::now();
 
-    //check whether a ball is currently detected by sensor and set message data
-    ball_msg.ball_detected = sensor.ballDetected();
-
-    //publish ball sensor message
-    ball_sensor_pub.publish(ball_msg);
-
-    //spin once because ROS
+    //process callback function calls
     ros::spinOnce();
 
     //sleep until next sensor reading
