@@ -134,9 +134,9 @@ void Motor::pulse()
 
   //send single pulse to motor with minimum duration and pause
   digitalWrite(this->_pulsePin, HIGH);
-  delayMicroseconds(MIN_PULSE_DURATION);
+  delayMicroseconds(this->min_high_pulse_width);
   digitalWrite(this->_pulsePin, LOW);
-  delayMicroseconds(MIN_PULSE_PAUSE);
+  delayMicroseconds(this->_min_low_pulse_width);
 
 
 }
@@ -145,12 +145,12 @@ void Motor::pulse(int pulseDuration, int pulsePause)
 {
 
   //confirm pulse duration value is valid
-  if (pulseDuration < MIN_PULSE_DURATION)
-    pulseDuration = MIN_PULSE_DURATION;
+  if (pulseDuration < this->min_high_pulse_width)
+    pulseDuration = this->min_high_pulse_width;
 
   //confirm pulse pause value is valid
-  if (pulsePause < MIN_PULSE_PAUSE)
-    pulsePause = MIN_PULSE_PAUSE;
+  if (pulsePause < this->_min_low_pulse_width)
+    pulsePause = this->_min_low_pulse_width;
 
   //send single pulse to motor with specified duration and pause
   digitalWrite(this->_pulsePin, HIGH);
