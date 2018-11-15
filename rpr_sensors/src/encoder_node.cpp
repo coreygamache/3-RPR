@@ -36,7 +36,7 @@ int main(int argc, char **argv)
   int ss_pin;
   if (!node_private.getParam(encoder_path + "/ss_pin", ss_pin))
   {
-    ROS_ERROR("[ERROR] slave select pin not defined in config file: sd_sensors/config/sensors.yaml, path: %s", encoder_path.c_str());
+    ROS_ERROR("[ERROR] slave select pin not defined in config file: rpr_sensors/config/sensors.yaml, path: %s", encoder_path.c_str());
     ROS_BREAK();
   }
   ROS_INFO("slave select pin: %d", ss_pin); //display slave select pin (for testing)
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
   float counts_per_rev;
   if (!node_private.getParam(encoder_path + "/counts_per_rev", counts_per_rev))
   {
-    ROS_ERROR("[ERROR] counts per revolution not defined in config file: sd_sensors/config/sensors.yaml, path: %s", encoder_path.c_str());
+    ROS_ERROR("[ERROR] counts per revolution not defined in config file: rpr_sensors/config/sensors.yaml, path: %s", encoder_path.c_str());
     ROS_BREAK();
   }
 
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
   float refresh_rate;
   if (!node_private.getParam(encoder_path + "/refresh_rate", refresh_rate))
   {
-    ROS_ERROR("[ERROR] refresh rate not defined in config file: sd_sensors/config/sensors.yaml, path: %s", encoder_path.c_str());
+    ROS_ERROR("[ERROR] refresh rate not defined in config file: rpr_sensors/config/sensors.yaml, path: %s", encoder_path.c_str());
     ROS_BREAK();
   }
 
