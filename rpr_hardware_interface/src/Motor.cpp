@@ -15,6 +15,8 @@ Motor::Motor()
 
   //set other variables to dummy values
   this->setMaxRPM(1);
+  this->setMinHighPulseWidth(2.5);
+  this->setMinLowPulseWidth(2.5);
 
 }
 
@@ -27,19 +29,19 @@ Motor::Motor(int alarm, int direction, int enable, int pulse, float max_rpm, flo
 }
 
 //basic functions
-float getMaxRPM()
+float Motor::getMaxRPM()
 {
   return this->_max_rpm;
 }
 
-float getMinHighPulseWidth()
+float Motor::getMinHighPulseWidth()
 {
-  return this->min_high_pulse_width;
+  return this->_min_high_pulse_width;
 }
 
-float getMinLowPulseWidth()
+float Motor::getMinLowPulseWidth()
 {
-  return this->min_low_pulse_width;
+  return this->_min_low_pulse_width;
 }
 
 int Motor::getAlarmPin()
@@ -77,19 +79,19 @@ void Motor::setEnablePin(int pin)
   this->_enablePin = pin;
 }
 
-void setMaxRPM(float value)
+void Motor::setMaxRPM(float value)
 {
-  this->max_rpm = value;
+  this->_max_rpm = value;
 }
 
-void setMinHighPulseWidth(float value)
+void Motor::setMinHighPulseWidth(float value)
 {
-  this->min_high_pulse_width = value;
+  this->_min_high_pulse_width = value;
 }
 
-void setMinLowPulseWidth(float value)
+void Motor::setMinLowPulseWidth(float value)
 {
-  this->min_low_pulse_width = value;
+  this->_min_low_pulse_width = value;
 }
 
 void Motor::setPulsePin(int pin)
@@ -134,7 +136,7 @@ void Motor::pulse()
 
   //send single pulse to motor with minimum duration and pause
   digitalWrite(this->_pulsePin, HIGH);
-  delayMicroseconds(this->min_high_pulse_width);
+  delayMicroseconds(this->_min_high_pulse_width);
   digitalWrite(this->_pulsePin, LOW);
   delayMicroseconds(this->_min_low_pulse_width);
 
@@ -145,8 +147,8 @@ void Motor::pulse(int pulseDuration, int pulsePause)
 {
 
   //confirm pulse duration value is valid
-  if (pulseDuration < this->min_high_pulse_width)
-    pulseDuration = this->min_high_pulse_width;
+  if (pulseDuration < this->_min_high_pulse_width)
+    pulseDuration = this->_min_high_pulse_width;
 
   //confirm pulse pause value is valid
   if (pulsePause < this->_min_low_pulse_width)

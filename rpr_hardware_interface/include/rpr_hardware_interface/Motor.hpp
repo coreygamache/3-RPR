@@ -10,8 +10,8 @@ class Motor
   //private properties
   protected:
     float _max_rpm;
-    float _min_high_pulse_width = 2.5;    //minimum delay between HIGH to LOW pulses [us]
-    float _min_low_pulse_width = 2.5;     //minimum delay between LOW to HIGH pulses [us]
+    float _min_high_pulse_width;    //minimum delay between HIGH to LOW pulses [us]
+    float _min_low_pulse_width;     //minimum delay between LOW to HIGH pulses [us]
     int _alarmPin;
     int _directionPin;
     int _enablePin;
