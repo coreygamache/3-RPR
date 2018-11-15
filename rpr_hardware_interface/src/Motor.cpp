@@ -1,10 +1,6 @@
 //includes
 #include <Motor.hpp>
 
-//constants
-const int MIN_PULSE_DURATION = 10; //minimum delay between HIGH to LOW pulses [us]
-const int MIN_PULSE_PAUSE = 10; //minimum delay between LOW to HIGH pulses [us]
-
 Motor::Motor()
 {
 
@@ -17,17 +13,35 @@ Motor::Motor()
   this->setEnablePin(255);
   this->setPulsePin(255);
 
+  //set other variables to dummy values
+  this->setMaxRPM(1);
+
 }
 
-Motor::Motor(int alarm, int direction, int enable, int pulse)
+Motor::Motor(int alarm, int direction, int enable, int pulse, float max_rpm, float min_high_pulse_width, float min_low_pulse_width)
 {
 
   //call init function to initialize object
-  this->init(alarm, direction, enable, pulse);
+  this->init(alarm, direction, enable, pulse, max_rpm, min_high_pulse_width, min_low_pulse_width);
 
 }
 
 //basic functions
+float getMaxRPM()
+{
+  return this->_max_rpm;
+}
+
+float getMinHighPulseWidth()
+{
+  return this->min_high_pulse_width;
+}
+
+float getMinLowPulseWidth()
+{
+  return this->min_low_pulse_width;
+}
+
 int Motor::getAlarmPin()
 {
   return this->_alarmPin;
@@ -63,14 +77,28 @@ void Motor::setEnablePin(int pin)
   this->_enablePin = pin;
 }
 
+void setMaxRPM(float value)
+{
+  this->max_rpm = value;
+}
+
+void setMinHighPulseWidth(float value)
+{
+  this->min_high_pulse_width = value;
+}
+
+void setMinLowPulseWidth(float value)
+{
+  this->min_low_pulse_width = value;
+}
+
 void Motor::setPulsePin(int pin)
 {
   this->_pulsePin = pin;
 }
 
-
 //advanced functions
-void Motor::init(int alarm, int direction, int enable, int pulse)
+void Motor::init(int alarm, int direction, int enable, int pulse, float max_rpm, float min_high_pulse_width, float min_low_pulse_width)
 {
 
   //run standard wiringPi setup routine
@@ -81,6 +109,11 @@ void Motor::init(int alarm, int direction, int enable, int pulse)
   this->setDirectionPin(direction);
   this->setEnablePin(enable);
   this->setPulsePin(pulse);
+
+  //set other variables
+  this->setMaxRPM(max_rpm);
+  this->setMinHighPulseWidth(min_high_pulse_width);
+  this->setMinLowPulseWidth(min_low_pulse_width);
 
   //set pin modes
   pinMode(this->_alarmPin, INPUT);
