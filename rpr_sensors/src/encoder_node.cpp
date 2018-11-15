@@ -68,7 +68,7 @@ int main(int argc, char **argv)
   encoder_msg.encoder_number = int(encoder_number[0]) - int('0');
 
   //create publisher to publish encoder message with buffer size 10, and latch set to false
-  ros::Publisher encoder_pub = node_private.advertise<rpr_msgs::Encoder>(encoder_path, 10, false);
+  ros::Publisher encoder_pub = node_private.advertise<rpr_msgs::Encoder>(encoder_name, 10, false);
 
   //set refresh rate of ROS loop to defined refresh rate from parameter server
   ros::Rate loop_rate(refresh_rate);
