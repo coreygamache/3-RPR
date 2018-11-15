@@ -17,10 +17,6 @@ class Motor
     int _enablePin;
     int _pulsePin;
 
-    //private functions
-    void pulse();
-    void pulse(int pulseDuration, int pulsePause);
-
   //public properties
   public:
 
@@ -46,6 +42,8 @@ class Motor
 
     //advanced functions
     void init(int alarm, int direction, int enable, int pulse, float max_rpm, float min_high_pulse_width, float min_low_pulse_width);
+    void pulse();
+    void pulse(int pulseDuration, int pulsePause);
     void setDirectionForward();
     void setDirectionReverse();
 
