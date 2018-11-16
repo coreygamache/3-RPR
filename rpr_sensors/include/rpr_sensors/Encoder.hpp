@@ -10,10 +10,17 @@
 class Encoder
 {
 
-  //private properties
+  //protected properties
   protected:
     float _countsPerRev;
+    int _lastPosition;
+    int _rotations;
     int _ssPin;
+
+    //protected functions
+    float readPosition();
+    int getRotations();
+    void setRotations(int value);
 
   //public properties
   public:
@@ -25,13 +32,17 @@ class Encoder
     //basic functions
     float getCountsPerRev();
     int getSSPin();
+    int getLastPosition();
     void setCountsPerRev(float cpr);
+    void setLastPosition(int value);
     void setSSPin(int pin);
 
     //advanced functions
-    float readPosition();
+    float getPosition();  //returns absolute distance traveled from zero point [rotations]
+    void addRotation();
     void init(float countsPerRev, int ssPin);
     void setZero();
+    void subtractRotation();
 
 };
 
