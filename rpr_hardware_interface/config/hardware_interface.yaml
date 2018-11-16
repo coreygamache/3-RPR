@@ -27,3 +27,6 @@ motor_3:
   min_low_pulse_width: 2.5 # [us]
   pulse_pin: 252
   refresh_rate: 10
+
+motor_control:
+  refresh_rate: 10
