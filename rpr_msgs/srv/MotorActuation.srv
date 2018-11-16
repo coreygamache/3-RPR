@@ -1,5 +1,0 @@
-Header header
-float32 position
-float32 angular_velocity
----
-float32 actual_position

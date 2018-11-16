@@ -27,15 +27,16 @@ add_message_files(
   DIRECTORY msg
   FILES
   Encoder.msg
+  MotorSpeed.msg
 )
 
 ## Generate services in the 'srv' folder
-add_service_files(
-  DIRECTORY srv
-  FILES
-  MotorActuation.srv
+#add_service_files(
+#  DIRECTORY srv
+#  FILES
+#  MotorActuation.srv
 #   Service2.srv
-)
+#)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
