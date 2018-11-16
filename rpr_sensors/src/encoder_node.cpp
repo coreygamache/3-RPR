@@ -49,6 +49,14 @@ int main(int argc, char **argv)
     ROS_BREAK();
   }
 
+  //retrieve encoder counts per revolution from parameter server
+  float input_radius;
+  if (!node_private.getParam(encoder_path + "/input_radius", input_radius))
+  {
+    ROS_ERROR("[ERROR] input radius not defined in config file: rpr_sensors/config/sensors.yaml, path: %s", encoder_path.c_str());
+    ROS_BREAK();
+  }
+
   //retrieve encoder refresh rate from parameter server
   float refresh_rate;
   if (!node_private.getParam(encoder_path + "/refresh_rate", refresh_rate))
@@ -79,8 +87,8 @@ int main(int argc, char **argv)
     //set message timestamp to time of encoder reading
     encoder_msg.header.stamp = ros::Time::now();
 
-    //get current encoder position set message data [deg]
-    encoder_msg.position = encoder.readPosition() / counts_per_rev * 360;
+    //get current encoder position and set message data [m]
+    encoder_msg.position = encoder.getPosition() / input_radius;
 
     //publish encoder message
     encoder_pub.publish(encoder_msg);
