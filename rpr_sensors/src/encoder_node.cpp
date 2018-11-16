@@ -49,7 +49,7 @@ int main(int argc, char **argv)
     ROS_BREAK();
   }
 
-  //retrieve encoder counts per revolution from parameter server
+  //retrieve encoder input radius from parameter server
   float input_radius;
   if (!node_private.getParam(encoder_path + "/input_radius", input_radius))
   {
